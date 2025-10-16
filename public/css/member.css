@@ -1,0 +1,78 @@
+/* 회원정보 수정 전용 확장 */
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #ddd;
+  margin-bottom: 10px;
+}
+
+.profile-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-change {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 13px;
+  text-align: center;
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+/* 숨겨진 파일 인풋 */
+#profileFile {
+  display: none;
+}
+
+.btn-reset-profile {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline transparent;
+  transition: text-decoration-color 0.2s;
+}
+
+.btn-reset-profile:hover {
+  text-decoration-color: var(--primary-color);
+}
+
+/* 하단 버튼 정렬 */
+.member-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.member-btns .btn-primary {
+  width: 100%;
+}
+
+.member-btns .btn-outline {
+  width: 100%;
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.member-btns .btn-outline:hover {
+  background-color: #fff5f5;
+}
