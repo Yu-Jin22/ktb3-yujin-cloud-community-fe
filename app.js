@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // 정적 리소스 제공 (HTML, CSS, JS)
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 // 로그인 체크 미들웨어 적용
 app.use((req, res, next) => {

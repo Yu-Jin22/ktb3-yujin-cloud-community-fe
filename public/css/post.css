@@ -65,6 +65,7 @@
 
 .post-item:hover {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
 }
 
 /* 제목 */
@@ -371,4 +372,8 @@ textarea:focus {
 .comment-pagination button.active {
   font-weight: 600;
   text-decoration: underline;
+}
+
+#loadingMsg {
+  display: none;
 }

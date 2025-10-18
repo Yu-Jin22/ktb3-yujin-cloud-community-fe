@@ -118,9 +118,9 @@ router.get("/member/password", async (req, res) => {
 router.get("/posts", async (req, res) => {
   const html = await renderPage({
     title: "게시글",
-    components: ["post"],
+    components: ["post_list"],
     css: ["/css/post.css"],
-    // js: ["/js/login.js"]
+    js: ["/js/post_list.js"],
   });
   res.send(html);
 });
@@ -143,7 +143,7 @@ router.get("/posts/:id", async (req, res) => {
     title: "게시글 상세",
     components: ["post_detail", "comment"],
     css: ["/css/post.css", "/css/form.css"],
-    // js: ["/js/login.js"]
+    js: ["/js/post_detail.js"],
   });
   res.send(html);
 });

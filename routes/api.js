@@ -1,8 +1,5 @@
 const express = require("express");
 const fetch = global.fetch;
-
-const { createProxyMiddleware } = require("http-proxy-middleware");
-
 const router = express.Router();
 
 const BACKEND_URL = "http://localhost:8080";

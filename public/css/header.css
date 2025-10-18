@@ -44,13 +44,14 @@ header .profile-area {
 }
 
 header .profile-img {
+  display: inline-block;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  object-fit: cover;
+  background-image: url("/assets/profile_default.webp");
+  background-size: cover;
+  background-position: center;
   cursor: pointer;
-  /* img넣기전 임시로 공간확인을 위해 */
-  background-color: black;
 }
 
 /* 드롭다운 */
@@ -61,7 +62,7 @@ header .dropdown {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: none;
   flex-direction: column;
   min-width: 160px;
