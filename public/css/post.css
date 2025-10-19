@@ -184,6 +184,7 @@ textarea:focus {
   justify-content: space-between;
   font-size: 13px;
   color: #777;
+  margin-bottom: 8px;
 }
 
 .detail-meta .author {
@@ -219,8 +220,14 @@ textarea:focus {
   background-color: #f4f4f4;
 }
 
+/* 이미지 컨테이너 */
+.image-container {
+  display: none;
+}
+
 /* 이미지 */
 .detail-image {
+  display: block;
   width: 100%;
   margin: 16px 0;
   border-radius: 8px;

@@ -31,7 +31,6 @@ const BACKEND_URL = "http://localhost:8080";
 //       return res.status(proxyRes.status).send(data);
 //     }
 
-//     // JSON 요청인 경우
 //     if (method !== "GET" && req.body && Object.keys(req.body).length > 0) {
 //       options.body = JSON.stringify(req.body);
 //       options.headers["Content-Type"] = "application/json";
@@ -64,11 +63,17 @@ router.use(async (req, res) => {
       options.headers["Content-Type"] = contentType.split(",")[0].trim();
     }
 
+    // 프론트에서 받은 쿠키를 백엔드로 전달
+    if (req.headers.cookie) {
+      options.headers.cookie = req.headers.cookie;
+    }
+
     // JSON 요청 처리
     if (method !== "GET" && req.body && Object.keys(req.body).length > 0) {
       options.body = JSON.stringify(req.body);
     }
 
+    // 프록시 요청
     const response = await fetch(targetUrl, options);
 
     // 백엔드에서 받은 쿠키를 프론트 도메인 기준으로 다시 설정

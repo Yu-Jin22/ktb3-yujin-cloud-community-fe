@@ -8,8 +8,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadingMsg.hidden = false;
     const res = await fetch("/api/posts", {
       method: "GET",
-      headers: { "Content-Type": "application:json" },
-      // body :
       credentials: "include",
     });
 
