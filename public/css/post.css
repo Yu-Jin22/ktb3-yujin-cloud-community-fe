@@ -384,3 +384,6 @@ textarea:focus {
 #loadingMsg {
   display: none;
 }
+#cancelEditBtn {
+  display: none;
+}

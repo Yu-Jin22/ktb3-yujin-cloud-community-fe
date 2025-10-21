@@ -24,6 +24,9 @@ async function renderPage(options = {}) {
     // 공통 헤더 랜더링
     const header = await loadTemplate(path.join(COMPONENT_PATH, "header.html"));
 
+    // 공통 푸터 랜더링
+    const footer = await loadTemplate(path.join(COMPONENT_PATH, "footer.html"));
+
     // 페이지 컴포넌트 랜더링 - 여러개 조합가능하게
     let content = "";
     if (options.components && Array.isArray(options.components)) {
@@ -56,6 +59,7 @@ async function renderPage(options = {}) {
       .replace("{{extraCSS}}", extraCSS)
       .replace("{{extraJS}}", extraJS)
       .replace("{{header}}", header)
+      .replace("{{footer}}", footer)
       .replace("{{content}}", content);
 
     return html;

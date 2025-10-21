@@ -12,12 +12,15 @@ https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css
     />
     <link rel="stylesheet" href="/css/common.css" />
     <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
     {{extraCSS}} {{extraJS}}
   </head>
   <body>
-    {{header}}
-    <main>
-      <div class="container body">{{content}}</div>
-    </main>
+    <div class="wrapper">
+      {{header}}
+      <main class="content">
+        <div class="container body">{{content}}</div>
+      </main>
+    {{footer}}
   </body>
 </html>
