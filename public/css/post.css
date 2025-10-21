@@ -325,6 +325,7 @@ textarea:focus {
   align-items: center;
   font-size: 13px;
   color: #777;
+  margin-bottom: 8px;
 }
 
 .comment-author {

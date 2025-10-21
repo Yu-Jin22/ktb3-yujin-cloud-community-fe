@@ -1,4 +1,5 @@
 import { Format } from "./utils/format.js";
+import { loadComments } from "./comment.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const postId = getPostIdFromUrl();
@@ -20,10 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       credentials: "include",
     });
 
-    if (!res.ok) {
-      throw new Error("게시글을 불러오는데 실패했습니다.");
-    }
-
+    if (!res.ok) throw new Error("게시글을 불러오는데 실패했습니다.");
     const data = await res.json();
 
     // 화면에 데이터 표시
@@ -44,6 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 이미지 렌더링 함수 호출
     renderPostImages(imageContainer, data.imageUrls);
+
+    // 댓글 불러오기
+    loadComments(postId);
   } catch (err) {
     console.error(" 게시글 불러오기 오류:", err);
     titleEl.textContent = "게시글을 불러올 수 없습니다.";
