@@ -319,6 +319,14 @@ textarea:focus {
   gap: 4px;
 }
 
+.comment-text {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: normal;
+}
+
 .comment-meta {
   display: flex;
   justify-content: space-between;
@@ -355,6 +363,11 @@ textarea:focus {
   border: 1px solid #ccc;
   background-color: #fff;
   cursor: pointer;
+}
+
+.comment-item.editing .comment-actions button {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .comment-actions button:hover {

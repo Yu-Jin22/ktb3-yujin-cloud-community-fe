@@ -1,5 +1,5 @@
 import { Format } from "./utils/format.js";
-import { loadComments } from "./comment.js";
+import { loadComments, initCommentForm } from "./comment.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const postId = getPostIdFromUrl();
@@ -45,11 +45,42 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 댓글 불러오기
     loadComments(postId);
+
+    // 댓글 작성 폼 초기화
+    initCommentForm(postId);
+
+    // 삭제 버튼
+    deleteBtn.addEventListener("click", async () => {
+      if (!confirm("정말 삭제하시겠습니까?")) return;
+
+      try {
+        const res = await fetch(`/api/posts/${postId}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+
+        if (!res.ok) throw new Error("게시물 삭제 실패");
+        alert("게시물 삭제가 완료되었습니다.");
+        window.location.href = "/posts";
+      } catch (err) {
+        console.error("게시물 삭제 오류:", err);
+        alert("게시물 삭제 중 오류가 발생했습니다.");
+      }
+    });
+
+    // 수정 버튼
+    editBtn.addEventListener("click", async () => {
+      goToUpdate(postId);
+    });
   } catch (err) {
     console.error(" 게시글 불러오기 오류:", err);
     titleEl.textContent = "게시글을 불러올 수 없습니다.";
   }
 });
+
+function goToUpdate(postId) {
+  location.href = `/posts/edit/${postId}`;
+}
 
 function getPostIdFromUrl() {
   const path = window.location.pathname;

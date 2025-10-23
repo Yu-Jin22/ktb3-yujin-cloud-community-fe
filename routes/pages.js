@@ -102,7 +102,7 @@ router.get("/member/edit", async (req, res) => {
     title: "회원정보 수정",
     components: ["member_edit"],
     css: ["/css/form.css", "/css/member.css"],
-    // js: ["/js/login.js"]
+    js: ["/js/member_edit.js"],
   });
   res.send(html);
 });
@@ -113,7 +113,7 @@ router.get("/member/password", async (req, res) => {
     title: "회원정보 수정",
     components: ["member_pw_edit"],
     css: ["/css/form.css", "/css/member.css"],
-    // js: ["/js/login.js"]
+    js: ["/js/password.js"],
   });
   res.send(html);
 });
