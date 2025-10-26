@@ -5,7 +5,7 @@
   <div class="profile-wrapper">
     <img
       id="profilePreview"
-      src="../assets/profile-default.png"
+      src="../assets/profile_default.webp"
       alt="프로필 미리보기"
     />
     <label for="profileFile" class="profile-change">변경</label>
@@ -25,14 +25,18 @@
 
   <div class="form-group">
     <label for="nickname">닉네임</label>
-    <input
-      type="text"
-      id="nickname"
-      placeholder="닉네임을 입력하세요"
-      maxlength="10"
-      required
-    />
-    <p id="nicknameError" class="error">* helper text</p>
+    <div class="input-with-btn">
+      <input
+        type="text"
+        id="nickname"
+        placeholder="닉네임을 입력하세요"
+        maxlength="10"
+        required
+      />
+      <button type="button" id="checkNicknameBtn" class="btn-check">
+        중복확인
+      </button>
+    </div>
   </div>
 
   <!-- 버튼들 -->
