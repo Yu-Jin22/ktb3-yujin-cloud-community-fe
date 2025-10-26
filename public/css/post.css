@@ -401,3 +401,6 @@ textarea:focus {
 #cancelEditBtn {
   display: none;
 }
+#likeCount {
+  cursor: pointer;
+}

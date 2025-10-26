@@ -4,16 +4,11 @@ import { loadComments, initCommentForm } from "./comment.js";
 document.addEventListener("DOMContentLoaded", async () => {
   const postId = getPostIdFromUrl();
   const titleEl = document.getElementById("postTitle");
-  const profileEl = document.getElementById("profileImg");
-  const authorEl = document.getElementById("postAuthor");
-  const dateEl = document.getElementById("postDate");
-  const contentEl = document.getElementById("postContent");
   const likeEl = document.getElementById("likeCount");
-  const viewEl = document.getElementById("viewCount");
-  const commentEl = document.getElementById("commentCount");
   const editBtn = document.getElementById("editBtn");
   const deleteBtn = document.getElementById("deleteBtn");
   const imageContainer = document.getElementById("imageContainer");
+  let isLiked = false;
 
   try {
     const res = await fetch(`/api/posts/${postId}`, {
@@ -24,21 +19,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!res.ok) throw new Error("게시글을 불러오는데 실패했습니다.");
     const data = await res.json();
 
-    // 화면에 데이터 표시
-    titleEl.textContent = data.title;
-    authorEl.textContent = data.authorNickname;
-    profileEl.src =
-      data.authorProfileImageUrl || "/assets/profile_default.webp";
-    dateEl.textContent = Format.formatDate(data.createdAt);
-    contentEl.textContent = data.content;
+    // 게시글 데이터 렌더링
+    renderPostDetail(data);
 
-    likeEl.textContent = `❤️ ${Format.formatCount(data.likeCount)} 좋아요`;
-    viewEl.textContent = `👁 ${Format.formatCount(data.hit)} 조회수`;
-    commentEl.textContent = `💬 ${Format.formatCount(data.commentCount)} 댓글`;
+    // 좋아요 초기 상태 설정
+    isLiked = data.liked;
+    updateLikeUI(likeEl, isLiked, data.likeCount);
 
-    // 작성자 여부에 따라 수정/삭제 버튼 제어
-    editBtn.style.display = data.author ? "inline-block" : "none";
-    deleteBtn.style.display = data.author ? "inline-block" : "none";
+    // 좋아요 버튼 클릭 이벤트
+    likeEl.addEventListener("click", async () => {
+      await toggleLike(postId, likeEl);
+    });
 
     // 이미지 렌더링 함수 호출
     renderPostImages(imageContainer, data.imageUrls);
@@ -77,6 +68,56 @@ document.addEventListener("DOMContentLoaded", async () => {
     titleEl.textContent = "게시글을 불러올 수 없습니다.";
   }
 });
+
+function renderPostDetail(data) {
+  document.getElementById("postTitle").textContent = data.title;
+  document.getElementById("postAuthor").textContent = data.authorNickname;
+  document.getElementById("profileImg").src =
+    data.authorProfileImageUrl || "/assets/profile_default.webp";
+  document.getElementById("postDate").textContent = Format.formatDate(
+    data.createdAt
+  );
+  document.getElementById("postContent").textContent = data.content;
+  document.getElementById("viewCount").textContent = `👁 ${Format.formatCount(
+    data.hit
+  )} 조회수`;
+  document.getElementById(
+    "commentCount"
+  ).textContent = `💬 ${Format.formatCount(data.commentCount)} 댓글`;
+
+  // 작성자 여부
+  const editBtn = document.getElementById("editBtn");
+  const deleteBtn = document.getElementById("deleteBtn");
+  editBtn.style.display = data.author ? "inline-block" : "none";
+  deleteBtn.style.display = data.author ? "inline-block" : "none";
+
+  renderPostImages(document.getElementById("imageContainer"), data.imageUrls);
+}
+
+function updateLikeUI(likeEl, liked, likeCount) {
+  if (liked) {
+    likeEl.innerHTML = `❤️ ${Format.formatCount(likeCount)} 좋아요`;
+  } else {
+    likeEl.innerHTML = `🤍 ${Format.formatCount(likeCount)} 좋아요`;
+  }
+}
+
+async function toggleLike(postId, likeEl) {
+  try {
+    const res = await fetch(`/api/posts/${postId}/like`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!res.ok) throw new Error("좋아요 요청 실패");
+
+    const data = await res.json();
+    updateLikeUI(likeEl, data.liked, data.likeCount);
+  } catch (err) {
+    console.error("좋아요 토글 오류:", err);
+    alert("좋아요 요청 중 오류가 발생했습니다.");
+  }
+}
 
 function goToUpdate(postId) {
   location.href = `/posts/edit/${postId}`;
