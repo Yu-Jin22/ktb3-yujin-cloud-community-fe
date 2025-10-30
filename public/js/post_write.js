@@ -1,3 +1,5 @@
+import { apiFetch } from "./common/apiFetch.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const postId = getPostIdFromUrl();
   const form = document.getElementById("postForm");
@@ -38,14 +40,14 @@ async function handleCreate(e) {
   }
 
   try {
-    const res = await fetch("/api/posts", {
+    const data = await apiFetch("/api/posts", {
       method: "POST",
-      credentials: "include",
       body: formData,
     });
 
-    if (!res.ok) throw new Error("게시글 등록 실패");
-    alert("게시글이 등록되었습니다!");
+    if (!data) return;
+
+    alert("게시글이 등록되었습니다.");
     window.location.href = "/posts"; // 목록 페이지로 이동
   } catch (err) {
     console.error(err);
@@ -56,13 +58,11 @@ async function handleCreate(e) {
 // 게시물 수정시 게시물 불러오기
 async function loadPostData(postId) {
   try {
-    const res = await fetch(`/api/posts/edit/${postId}`, {
+    const data = await apiFetch(`/api/posts/edit/${postId}`, {
       method: "GET",
-      credentials: "include",
     });
 
-    if (!res.ok) throw new Error("게시글 정보를 불러올 수 없습니다.");
-    const data = await res.json();
+    if (!data) return;
 
     document.getElementById("title").value = data.title;
     document.getElementById("content").value = data.content;
@@ -87,21 +87,21 @@ async function handleEdit(e, postId) {
 
   formData.append("request", JSON.stringify({ title, content }));
 
-  //   for (const [key, value] of formData.entries()) {
-  //     console.log("FormData:", key, value);
-  //   }
+  for (const [key, value] of formData.entries()) {
+    console.log("FormData:", key, value);
+  }
 
   // TODO 파일 삭제 및 추가 관련 작업
 
   try {
-    const res = await fetch(`/api/posts/${postId}`, {
+    const data = await apiFetch(`/api/posts/${postId}`, {
       method: "PATCH",
-      credentials: "include",
       body: formData,
     });
 
-    if (!res.ok) throw new Error("게시글 수정 실패");
-    alert("게시글이 수정되었습니다!");
+    if (!data) return;
+
+    alert("게시글이 수정되었습니다.");
     window.location.href = `/posts/${postId}`; // 수정 완료 후 상세 페이지로 이동
   } catch (err) {
     console.error(err);

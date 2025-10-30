@@ -1,5 +1,6 @@
 import { Format } from "./utils/format.js";
 import { loadComments, initCommentForm } from "./comment.js";
+import { apiFetch } from "./common/apiFetch.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const postId = getPostIdFromUrl();
@@ -11,13 +12,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   let isLiked = false;
 
   try {
-    const res = await fetch(`/api/posts/${postId}`, {
+    const data = await apiFetch(`/api/posts/${postId}`, {
       method: "GET",
-      credentials: "include",
     });
 
-    if (!res.ok) throw new Error("게시글을 불러오는데 실패했습니다.");
-    const data = await res.json();
+    if (!data) return;
+
+    // if (!res.ok) throw new Error("게시글을 불러오는데 실패했습니다.");
+    // const data = await res.json();
 
     // 게시글 데이터 렌더링
     renderPostDetail(data);
@@ -42,16 +44,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // 삭제 버튼
     deleteBtn.addEventListener("click", async () => {
-      if (!confirm("정말 삭제하시겠습니까?")) return;
+      if (!confirm("해당 게시글을 삭제하시겠습니까?")) return;
 
       try {
-        const res = await fetch(`/api/posts/${postId}`, {
+        const data = await apiFetch(`/api/posts/${postId}`, {
           method: "DELETE",
-          credentials: "include",
         });
 
-        if (!res.ok) throw new Error("게시물 삭제 실패");
+        if (!data) return;
         alert("게시물 삭제가 완료되었습니다.");
+
         window.location.href = "/posts";
       } catch (err) {
         console.error("게시물 삭제 오류:", err);
@@ -104,14 +106,12 @@ function updateLikeUI(likeEl, liked, likeCount) {
 
 async function toggleLike(postId, likeEl) {
   try {
-    const res = await fetch(`/api/posts/${postId}/like`, {
+    const data = await apiFetch(`/api/posts/${postId}/like`, {
       method: "POST",
-      credentials: "include",
     });
 
-    if (!res.ok) throw new Error("좋아요 요청 실패");
+    if (!data) return;
 
-    const data = await res.json();
     updateLikeUI(likeEl, data.liked, data.likeCount);
   } catch (err) {
     console.error("좋아요 토글 오류:", err);

@@ -1,6 +1,7 @@
 import { Valid } from "./utils/valid.js";
 import { FormHelper } from "./utils/formHelper.js";
 import { message } from "./utils/message.js";
+import { apiFetch } from "./common/apiFetch.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("memberForm");
@@ -58,19 +59,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("/api/auth/password", {
+      const data = await apiFetch("/api/auth/password", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           currentPassword,
           newPassword,
           newPasswordConfirm,
         }),
-        credentials: "include",
       });
-      const data = await res.json();
 
-      if (res.ok) {
+      if (!data) return;
+
+      if (data.message) {
         alert("비밀번호 수정이 완료되었습니다.");
         currentPwInput.value = null;
         newPwInput.value = null;

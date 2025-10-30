@@ -1,6 +1,7 @@
 import { Valid } from "./utils/valid.js";
 import { FormHelper } from "./utils/formHelper.js";
 import { message } from "./utils/message.js";
+import { apiFetch } from "./common/apiFetch.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const form = document.getElementById("memberForm");
@@ -26,12 +27,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 회원 정보 불러오기
   try {
-    const res = await fetch("/api/users/me", {
+    const data = await apiFetch("/api/users/me", {
       method: "GET",
-      credentials: "include",
     });
-    if (!res.ok) throw new Error("회원정보 조회 실패");
-    const data = await res.json();
+
+    if (!data) return;
 
     // 회원정보 뿌리기
     emailInput.value = data.email;
@@ -76,16 +76,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-      const res = await fetch("/api/users/nickname", {
+      const data = await apiFetch("/api/users/nickname", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nickname }),
-        credentials: "include",
       });
 
-      const data = await res.json();
+      if (!data) return;
 
-      if (res.ok && !data.isDuplicate) {
+      if (!data.isDuplicate) {
         isCheckDuplicateNickname = true;
         alert("사용가능한 닉네임입니다.");
       } else {
@@ -143,14 +141,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     // }
 
     try {
-      const res = await fetch("/api/users/me", {
+      const data = await apiFetch("/api/users/me", {
         method: "PATCH",
         body: formData,
-        credentials: "include",
       });
 
-      if (!res.ok) throw new Error("회원정보 수정 실패");
-      alert("회원정보가 수정되었습니다!");
+      if (!data) return;
+
+      alert("회원정보가 수정되었습니다.");
       window.location.reload();
     } catch (err) {
       console.error("회원정보 수정 오류:", err);
@@ -160,15 +158,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 회원 탈퇴
   withdrawBtn.addEventListener("click", async () => {
-    if (!confirm("정말 탈퇴하시겠습니까?")) return;
+    if (
+      !confirm(
+        nicknameInput.value +
+          " 님, 정말 탈퇴하시겠습니까? \n탈퇴 시 모든 회원 정보와 서비스 이용 기록은 삭제되며 복구할 수 없습니다."
+      )
+    )
+      return;
 
     try {
-      const res = await fetch("/api/users/withdraw", {
+      const data = await apiFetch("/api/users/withdraw", {
         method: "DELETE",
-        credentials: "include",
       });
 
-      if (!res.ok) throw new Error("회원 탈퇴 실패");
+      if (!data) return;
+
       alert("회원 탈퇴가 완료되었습니다.");
       window.location.href = "/login";
     } catch (err) {
