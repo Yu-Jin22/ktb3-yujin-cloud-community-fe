@@ -1,0 +1,47 @@
+<h1 class="form-title">회원정보수정</h1>
+
+<!-- 프로필 사진 -->
+<section class="profile-section">
+  <div class="profile-wrapper">
+    <img
+      id="profilePreview"
+      src="../assets/profile_default.webp"
+      alt="프로필 미리보기"
+    />
+    <label for="profileFile" class="profile-change">변경</label>
+    <input type="file" id="profileFile" accept="image/*" />
+  </div>
+  <button type="button" id="resetProfileBtn" class="btn-reset-profile">
+    기본 이미지로 변경
+  </button>
+</section>
+
+<!-- 이메일 / 닉네임 -->
+<form id="memberForm" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="email">이메일</label>
+    <input type="email" id="email" disabled />
+  </div>
+
+  <div class="form-group">
+    <label for="nickname">닉네임</label>
+    <div class="input-with-btn">
+      <input
+        type="text"
+        id="nickname"
+        placeholder="닉네임을 입력하세요"
+        maxlength="10"
+        required
+      />
+      <button type="button" id="checkNicknameBtn" class="btn-check">
+        중복확인
+      </button>
+    </div>
+  </div>
+
+  <!-- 버튼들 -->
+  <div class="member-btns">
+    <button type="submit" class="btn-primary">수정하기</button>
+    <button type="button" class="btn-text" id="withdrawBtn">회원 탈퇴</button>
+  </div>
+</form>

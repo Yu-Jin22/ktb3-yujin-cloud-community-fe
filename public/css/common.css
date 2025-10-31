@@ -1,0 +1,45 @@
+/* ---------- 기본 공통 ---------- */
+:root {
+  --background-color: #f6f7fb;
+  --primary-color: #6c63ff;
+  --font-color: #333;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 모바일 여백 통일 */
+.container {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.container.body {
+  padding: 40px 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1; /* 남는 공간 채우기 (푸터를 맨 아래로 밀어냄) */
+}
