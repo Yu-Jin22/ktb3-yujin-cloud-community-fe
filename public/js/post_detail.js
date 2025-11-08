@@ -1,5 +1,5 @@
 import { Format } from "./utils/format.js";
-import { loadComments, initCommentForm } from "./comment.js";
+import { initCommentPaging, initCommentForm } from "./comment.js";
 import { apiFetch } from "./common/apiFetch.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -18,9 +18,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!data) return;
 
-    // if (!res.ok) throw new Error("게시글을 불러오는데 실패했습니다.");
-    // const data = await res.json();
-
     // 게시글 데이터 렌더링
     renderPostDetail(data);
 
@@ -37,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderPostImages(imageContainer, data.imageUrls);
 
     // 댓글 불러오기
-    loadComments(postId);
+    await initCommentPaging(postId);
 
     // 댓글 작성 폼 초기화
     initCommentForm(postId);

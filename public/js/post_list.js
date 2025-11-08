@@ -1,34 +1,77 @@
 import { Format } from "./utils/format.js";
 import { apiFetch } from "./common/apiFetch.js";
 
+let cursor = null; // 마지막 게시물 ID (커서)
+let loading = false; // 중복 요청 방지용
+let isEnd = false; // 더 이상 게시물이 없을 때 true
+const size = 10;
+
 document.addEventListener("DOMContentLoaded", async () => {
   const postList = document.getElementById("postList");
-  const loadingMsg = document.getElementById("loadingMsg");
+  const loadingSpinner = document.getElementById("loadingSpinner");
 
-  try {
-    loadingMsg.hidden = false;
+  // 1, 첫번쨰 페이지 불러오기
+  await loadPosts(postList, loadingSpinner);
 
-    const posts = await apiFetch("/api/posts", { method: "GET" });
-    if (!posts) return;
+  // 2. 스크롤 이벤트 등록
+  window.addEventListener("scroll", async () => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
-    renderPosts(posts.posts, postList);
-  } catch (err) {
-    console.error(" 게시글 불러오기 오류:", err);
-    postList.innerHTML = `<li>게시글을 불러오지 못했습니다.<br> 다시 시도해주세요.</li>`;
-  } finally {
-    loadingMsg.hidden = true;
-  }
+    // 스크롤이 거의 맨 아래 왔을 때
+    if (scrollTop + clientHeight >= scrollHeight - 100) {
+      await loadPosts(postList, loadingSpinner);
+    }
+  });
 });
 
+async function loadPosts(postList, loadingSpinner) {
+  if (loading || isEnd) return; // 중복/마지막 페이지 방지
+  loading = true;
+  loadingSpinner.classList.remove("hidden");
+
+  try {
+    // 커서 기반 요청
+    const query = cursor ? `?cursor=${cursor}&size=${size}` : `?size=${size}`;
+    const posts = await apiFetch(`/api/posts${query}`, { method: "GET" });
+
+    if (!posts || !posts.posts) return;
+
+    // 새 게시글 추가 렌더링
+    renderPosts(posts.posts, postList, true);
+
+    // 다음 커서값 갱신 (마지막 게시물의 ID)
+    if (posts.posts.length > 0) {
+      cursor = posts.posts[posts.posts.length - 1].postId;
+    }
+
+    // 응답이 page size보다 적다면 마지막 페이지임
+    if (posts.posts.length < size) {
+      isEnd = true;
+      loadingSpinner.classList.add("hidden");
+    }
+  } catch (err) {
+    console.error("게시글 불러오기 오류:", err);
+    postList.insertAdjacentHTML(
+      "beforeend",
+      `<li>게시글을 불러오지 못했습니다. 다시 시도해주세요.</li>`
+    );
+  } finally {
+    loading = false;
+    if (!isEnd) loadingSpinner.classList.add("hidden");
+  }
+}
+
 // 게시글 랜더링 함수
-function renderPosts(posts, postList) {
+function renderPosts(posts, postList, append = false) {
   if (!posts || posts.length === 0) {
-    postList.innerHTML = `<li>등록된 게시글이 없습니다.</li>`;
+    if (!append) {
+      postList.innerHTML = `<li>등록된 게시글이 없습니다.</li>`;
+    }
     return;
   }
 
-  // 게시물 목록 초기화
-  postList.innerHTML = "";
+  // 초기 로드 시에만 비움
+  if (!append) postList.innerHTML = "";
 
   // for문으로 li그리기
   posts.forEach((post) => {
