@@ -427,3 +427,18 @@ textarea:focus {
     transform: rotate(360deg);
   }
 }
+
+.btn-more {
+  display: block;
+  margin: 12px auto;
+  padding: 8px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+.end-msg {
+  text-align: center;
+  color: #888;
+  margin: 8px 0;
+}

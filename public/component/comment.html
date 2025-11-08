@@ -11,10 +11,11 @@
   <!-- 댓글 목록 -->
   <ul id="commentList" class="comment-list"></ul>
 
-  <!-- 페이지 버튼 -->
-  <div class="comment-pagination" id="pagination">
-    <button class="active">1</button>
-    <button>2</button>
-    <button>3</button>
+  <!-- 더보기 버튼 -->
+  <div id="commentLoadBox" class="comment-load-box">
+    <button id="loadMoreComments" class="btn-more">댓글 더보기</button>
+    <div id="commentSpinner" class="loading-spinner hidden">
+      <div class="spinner"></div>
+    </div>
   </div>
 </section>
