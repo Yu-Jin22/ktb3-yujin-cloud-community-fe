@@ -15,7 +15,7 @@ async function loadTemplate(filePath) {
 }
 
 // 공통 레이아웃, 헤더 랜더링 함수
-async function renderPage(options = {}) {
+async function renderPage(req, options = {}) {
   try {
     // 레이아웃 랜더링
     const [layout] = await Promise.all([
@@ -26,6 +26,11 @@ async function renderPage(options = {}) {
 
     // 공통 푸터 랜더링
     const footer = await loadTemplate(path.join(COMPONENT_PATH, "footer.html"));
+
+    // 로그인 여부 판단
+    const { accessToken, refreshToken } = req.cookies || {};
+    const isLoggedIn = !!(accessToken || refreshToken);
+    console.log("로그인 상태:", isLoggedIn);
 
     // 페이지 컴포넌트 랜더링 - 여러개 조합가능하게
     let content = "";
@@ -53,11 +58,16 @@ async function renderPage(options = {}) {
         .join("\n");
     }
 
+    // 로그인 여부를 전역 변수로 HTML에 삽입
+    const loginScript = `<script>window.IS_LOGGED_IN = ${
+      isLoggedIn ? "true" : "false"
+    };</script>`;
+
     // 템플릿 조립
     const html = layout
       .replace("{{title}}", options.title || "아무 말 대잔치")
       .replace("{{extraCSS}}", extraCSS)
-      .replace("{{extraJS}}", extraJS)
+      .replace("{{extraJS}}", `${loginScript}\n${extraJS}`)
       .replace("{{header}}", header)
       .replace("{{footer}}", footer)
       .replace("{{content}}", content);
@@ -76,7 +86,7 @@ router.get("/", (req, res) => {
 
 // 로그인 페이지
 router.get("/login", async (req, res) => {
-  const html = await renderPage({
+  const html = await renderPage(req, {
     title: "로그인",
     components: ["login"],
     css: ["/css/form.css"],
@@ -87,7 +97,7 @@ router.get("/login", async (req, res) => {
 
 // 회원가입 페이지
 router.get("/signup", async (req, res) => {
-  const html = await renderPage({
+  const html = await renderPage(req, {
     title: "회원가입",
     components: ["signup"],
     css: ["/css/form.css"],
@@ -98,7 +108,7 @@ router.get("/signup", async (req, res) => {
 
 // 회원 정보 수정 페이지
 router.get("/member/edit", async (req, res) => {
-  const html = await renderPage({
+  const html = await renderPage(req, {
     title: "회원정보 수정",
     components: ["member_edit"],
     css: ["/css/form.css", "/css/member.css"],
@@ -109,7 +119,7 @@ router.get("/member/edit", async (req, res) => {
 
 // 비밀번호 수정 페이지
 router.get("/member/password", async (req, res) => {
-  const html = await renderPage({
+  const html = await renderPage(req, {
     title: "회원정보 수정",
     components: ["member_pw_edit"],
     css: ["/css/form.css", "/css/member.css"],
@@ -120,7 +130,7 @@ router.get("/member/password", async (req, res) => {
 
 // 게시글 목록 페이지
 router.get("/posts", async (req, res) => {
-  const html = await renderPage({
+  const html = await renderPage(req, {
     title: "게시글",
     components: ["post_list"],
     css: ["/css/post.css"],
@@ -131,7 +141,7 @@ router.get("/posts", async (req, res) => {
 
 // 게시글 작성 페이지
 router.get("/posts/write", async (req, res) => {
-  const html = await renderPage({
+  const html = await renderPage(req, {
     title: "게시글 작성",
     components: ["post_write"],
     css: ["/css/post.css", "/css/form.css"],
@@ -143,7 +153,7 @@ router.get("/posts/write", async (req, res) => {
 // 게시물 상세 페이지
 router.get("/posts/:id", async (req, res) => {
   const postId = req.params.id;
-  const html = await renderPage({
+  const html = await renderPage(req, {
     title: "게시글 상세",
     components: ["post_detail", "comment"],
     css: ["/css/post.css", "/css/form.css"],
@@ -155,7 +165,7 @@ router.get("/posts/:id", async (req, res) => {
 // 게시글 수정 페이지
 router.get("/posts/edit/:id", async (req, res) => {
   const postId = req.params.id;
-  const html = await renderPage({
+  const html = await renderPage(req, {
     title: "게시글 수정",
     components: ["post_write"],
     css: ["/css/post.css", "/css/form.css"],

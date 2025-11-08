@@ -1,4 +1,5 @@
 import { Format } from "./utils/format.js";
+import { apiFetch } from "./common/apiFetch.js";
 
 // 댓글 이벤트 등록 여부
 let commentEventListenerAdded = false;
@@ -13,13 +14,11 @@ export async function loadComments(postId) {
   cancelBtn.style.display = "none";
 
   try {
-    const res = await fetch(`/api/posts/${postId}/comments`, {
+    const data = await apiFetch(`/api/posts/${postId}/comments`, {
       method: "GET",
-      credentials: "include",
     });
 
-    if (!res.ok) throw new Error("댓글을 불러오는데 실패했습니다.");
-    const data = await res.json();
+    if (!data) return;
 
     commentEl.innerHTML = "";
 
@@ -85,21 +84,14 @@ export async function createComment(postId) {
   }
 
   try {
-    const res = await fetch(`/api/posts/${postId}/comments`, {
+    const data = await apiFetch(`/api/posts/${postId}/comments`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
       body: JSON.stringify({
         comment: commentText,
       }),
     });
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "댓글 작성에 실패했습니다.");
-    }
+    if (!data) return;
 
     // 입력창 초기화
     commentInput.value = "";
@@ -140,15 +132,11 @@ async function handleDeleteComment(postId, commentId) {
   }
 
   try {
-    const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+    const data = await apiFetch(`/api/posts/${postId}/comments/${commentId}`, {
       method: "DELETE",
-      credentials: "include",
     });
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "댓글 삭제에 실패했습니다.");
-    }
+    if (!data) return;
 
     alert("댓글이 삭제되었습니다.");
 
@@ -323,22 +311,14 @@ async function updateComment(postId, commentId) {
   }
 
   try {
-    const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
+    const data = await apiFetch(`/api/posts/${postId}/comments/${commentId}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
       body: JSON.stringify({
         comment: commentText,
       }),
     });
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "댓글 수정에 실패했습니다.");
-    }
-
+    if (!data) return;
     alert("댓글이 수정되었습니다.");
 
     // 수정 모드 해제

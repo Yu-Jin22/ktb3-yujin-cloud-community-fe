@@ -1,4 +1,5 @@
 import { Format } from "./utils/format.js";
+import { apiFetch } from "./common/apiFetch.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const postList = document.getElementById("postList");
@@ -6,16 +7,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     loadingMsg.hidden = false;
-    const res = await fetch("/api/posts", {
-      method: "GET",
-      credentials: "include",
-    });
 
-    if (!res.ok) {
-      throw new Error("게시글을 불러오는데 실패했습니다.");
-    }
+    const posts = await apiFetch("/api/posts", { method: "GET" });
+    if (!posts) return;
 
-    const posts = await res.json();
     renderPosts(posts.posts, postList);
   } catch (err) {
     console.error(" 게시글 불러오기 오류:", err);

@@ -1,6 +1,7 @@
 import { Valid } from "./utils/valid.js";
 import { attachValidation } from "./utils/formHelper.js";
 import { message } from "./utils/message.js";
+import { apiFetch } from "./common/apiFetch.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const emailInput = document.getElementById("email");
@@ -32,21 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("/api/auth", {
+      const data = await apiFetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-        credentials: "include", // 백엔드 세션 쿠키 주고받기
       });
 
-      const data = await res.json();
-      // console.log("응답:", data);
+      // apiFetch에서 401 처리 후 null 반환하므로 여기서는 data null 여부만 확인
+      if (!data) return;
 
-      if (res.ok) {
-        location.href = "/posts";
-      } else {
-        alert(data.message || "로그인 실패하였으니 다시 시도해주세요.");
-      }
+      location.href = "/posts";
     } catch (err) {
       console.error("로그인 요청 오류:", err);
       alert(message.COMMON.SERVER_ERROR);

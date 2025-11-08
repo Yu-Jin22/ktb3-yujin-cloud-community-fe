@@ -1,6 +1,7 @@
 import { Valid } from "./utils/valid.js";
 import { FormHelper } from "./utils/formHelper.js";
 import { message } from "./utils/message.js";
+import { apiFetch } from "./common/apiFetch.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const emailInput = document.getElementById("email");
@@ -52,16 +53,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("/api/users/email", {
+      const data = await apiFetch("/api/users/email", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
-        credentials: "include", // 백엔드 세션 쿠키 주고받기
       });
 
-      const data = await res.json();
+      if (!data) return;
 
-      if (res.ok && !data.isDuplicate) {
+      if (!data.isDuplicate) {
         isCheckDuplicateEmail = true;
         alert("사용가능한 이메일입니다.");
       } else {
@@ -84,16 +83,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch("/api/users/nickname", {
+      const data = await apiFetch("/api/users/nickname", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nickname }),
-        credentials: "include", // 백엔드 세션 쿠키 주고받기
       });
 
-      const data = await res.json();
+      if (!data) return;
 
-      if (res.ok && !data.isDuplicate) {
+      if (!data.isDuplicate) {
         isCheckDuplicateNickname = true;
         alert("사용가능한 닉네임입니다.");
       } else {
@@ -159,16 +156,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 3. 서버로 회원가입 요청
     try {
-      const res = await fetch("/api/users", {
+      const data = await apiFetch("/api/users", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, confirmPassword, nickname }),
-        credentials: "include",
       });
 
-      const data = await res.json();
+      if (!data) return;
 
-      if (res.ok) {
+      if (data.message) {
         alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
         location.href = "/login";
       } else {
