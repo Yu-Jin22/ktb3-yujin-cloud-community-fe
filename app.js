@@ -2,6 +2,12 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const routes = require("./routes");
+const dotenv = require("dotenv");
+
+// NODE_ENV에 따라 다른 .env 사용
+dotenv.config({
+  path: process.env.NODE_ENV === "production" ? ".env.prod" : ".env",
+});
 
 const app = express();
 const PORT = 3000;
@@ -54,6 +60,6 @@ app.use((req, res, next) => {
 app.use("/", routes);
 
 // 서버 실행
-app.listen(PORT, () =>
+app.listen(PORT, "0.0.0.0", () =>
   console.log(`Front Server running on http://localhost:${PORT}`)
 );

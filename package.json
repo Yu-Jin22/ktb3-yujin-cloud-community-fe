@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Yu-Jin22/ktb3-yujin-cloud-community-fe#readme",
   "dependencies": {
     "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "set-cookie-parser": "^2.7.2"
   }

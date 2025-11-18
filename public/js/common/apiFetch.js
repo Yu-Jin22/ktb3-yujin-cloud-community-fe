@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://localhost:8080";
+const BACKEND_URL = window.__API_BASE_URL__;
 export async function apiFetch(url, options = {}) {
   try {
     const fetchOptions = {
