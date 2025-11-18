@@ -58,7 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ email }),
       });
 
-      if (!data) return;
+      if (data.ok === false) {
+        alert(data.message);
+        return;
+      }
 
       if (!data.isDuplicate) {
         isCheckDuplicateEmail = true;
@@ -88,7 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ nickname }),
       });
 
-      if (!data) return;
+      if (data.ok === false) {
+        alert(data.message);
+        return;
+      }
 
       if (!data.isDuplicate) {
         isCheckDuplicateNickname = true;
@@ -161,7 +167,10 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ email, password, confirmPassword, nickname }),
       });
 
-      if (!data) return;
+      if (data.ok === false) {
+        alert(data.message);
+        return;
+      }
 
       if (data.message) {
         alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");

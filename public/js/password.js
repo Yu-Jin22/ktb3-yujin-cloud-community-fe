@@ -68,7 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }),
       });
 
-      if (!data) return;
+      if (data.ok === false) {
+        alert(data.message);
+        return;
+      }
 
       if (data.message) {
         alert("비밀번호 수정이 완료되었습니다.");

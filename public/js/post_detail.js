@@ -16,7 +16,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       method: "GET",
     });
 
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
 
     // 게시글 데이터 렌더링
     renderPostDetail(data);
@@ -48,7 +51,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           method: "DELETE",
         });
 
-        if (!data) return;
+        if (data.ok === false) {
+          alert(data.message);
+          return;
+        }
         alert("게시물 삭제가 완료되었습니다.");
 
         window.location.href = "/posts";
@@ -107,7 +113,10 @@ async function toggleLike(postId, likeEl) {
       method: "POST",
     });
 
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
 
     updateLikeUI(likeEl, data.liked, data.likeCount);
   } catch (err) {

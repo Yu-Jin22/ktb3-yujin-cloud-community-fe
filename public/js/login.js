@@ -20,13 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = document.querySelector("#email").value;
     const password = document.querySelector("#password").value;
 
-    if (!Valid.isValidEmail) {
+    if (!Valid.isValidEmail(email)) {
       alert(message.EMAIL.INVALID);
       emailInput.focus();
       return;
     }
 
-    if (!Valid.isValidPassword) {
+    if (!Valid.isValidPassword(password)) {
       alert(message.PASSWORD.INVALID);
       pwInput.focus();
       return;
@@ -39,8 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({ email, password }),
       });
 
-      // apiFetch에서 401 처리 후 null 반환하므로 여기서는 data null 여부만 확인
-      if (!data) return;
+      if (data.ok === false) {
+        alert(data.message);
+        return;
+      }
 
       location.href = "/posts";
     } catch (err) {

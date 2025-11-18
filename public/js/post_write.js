@@ -45,7 +45,10 @@ async function handleCreate(e) {
       body: formData,
     });
 
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
 
     alert("게시글이 등록되었습니다.");
     window.location.href = "/posts"; // 목록 페이지로 이동
@@ -62,7 +65,10 @@ async function loadPostData(postId) {
       method: "GET",
     });
 
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
 
     document.getElementById("title").value = data.title;
     document.getElementById("content").value = data.content;
@@ -99,7 +105,10 @@ async function handleEdit(e, postId) {
       body: formData,
     });
 
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
 
     alert("게시글이 수정되었습니다.");
     window.location.href = `/posts/${postId}`; // 수정 완료 후 상세 페이지로 이동

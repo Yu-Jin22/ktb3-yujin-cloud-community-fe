@@ -32,7 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
         credentials: "include",
       });
 
-      if (!data) return;
+      if (data.ok === false) {
+        alert(data.message);
+        return;
+      }
 
       alert("로그아웃되었습니다.");
 

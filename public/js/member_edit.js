@@ -31,7 +31,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       method: "GET",
     });
 
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
 
     // 회원정보 뿌리기
     emailInput.value = data.email;
@@ -46,19 +49,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error(" 회원정보 로드 실패:", err);
     alert("회원정보를 불러올 수 없습니다.");
   }
-
-  // 3. 프로필 미리보기 변경
-  //   profileFileInput.addEventListener("change", (e) => {
-  //     const file = e.target.files[0];
-  //     if (!file) return;
-
-  //     const reader = new FileReader();
-  //     reader.onload = (event) => {
-  //       profilePreview.src = event.target.result;
-  //       resetToDefault = false;
-  //     };
-  //     reader.readAsDataURL(file);
-  //   });
 
   // 기본 이미지로 변경
   resetBtn.addEventListener("click", () => {
@@ -81,7 +71,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         body: JSON.stringify({ nickname }),
       });
 
-      if (!data) return;
+      if (data.ok === false) {
+        alert(data.message);
+        return;
+      }
 
       if (!data.isDuplicate) {
         isCheckDuplicateNickname = true;
@@ -100,6 +93,43 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 닉네임 입력값이 바뀌면 중복확인 초기화
   nicknameInput.addEventListener("input", () => {
     isCheckDuplicateNickname = false;
+  });
+
+  // 이미지 클릭 → 파일창 열기
+  profilePreview.addEventListener("click", () => {
+    profileFileInput.click();
+  });
+
+  // 프로필 미리보기 변경 + 확장자 검사
+  profileFileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // 1. 확장자 검사
+    const allowedExtensions = ["jpg", "jpeg", "png", "webp"];
+    const fileExt = file.name.split(".").pop().toLowerCase();
+
+    if (!allowedExtensions.includes(fileExt)) {
+      alert("이미지 파일은 jpg, jpeg, png, webp 형식만 업로드할 수 있습니다.");
+      profileFileInput.value = "";
+      return;
+    }
+
+    // 2. 파일 사이즈 제한 (예: 5MB)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert("이미지 파일 크기는 최대 5MB까지 가능합니다.");
+      profileFileInput.value = "";
+      return;
+    }
+
+    // 3. 미리보기 처리
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      profilePreview.src = event.target.result;
+      resetToDefault = false;
+    };
+    reader.readAsDataURL(file);
   });
 
   // 회원정보 수정 (닉네임 + 프로필 이미지)
@@ -146,7 +176,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         body: formData,
       });
 
-      if (!data) return;
+      if (data.ok === false) {
+        alert(data.message);
+        return;
+      }
 
       alert("회원정보가 수정되었습니다.");
       window.location.reload();
@@ -171,7 +204,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         method: "DELETE",
       });
 
-      if (!data) return;
+      if (data.ok === false) {
+        alert(data.message);
+        return;
+      }
 
       alert("회원 탈퇴가 완료되었습니다.");
       window.location.href = "/login";

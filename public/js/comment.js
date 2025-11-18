@@ -60,7 +60,10 @@ export async function loadComments(postId, { append = false } = {}) {
     const data = await apiFetch(`/api/posts/${postId}/comments${query}`, {
       method: "GET",
     });
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
 
     const items = data.content ?? [];
 
@@ -154,7 +157,10 @@ export async function createComment(postId) {
         comment: commentText,
       }),
     });
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
 
     // 입력 초기화
     commentInput.value = "";
@@ -195,7 +201,10 @@ async function handleDeleteComment(postId, commentId) {
       method: "DELETE",
     });
 
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
 
     alert("댓글이 삭제되었습니다.");
 
@@ -377,7 +386,10 @@ async function updateComment(postId, commentId) {
       }),
     });
 
-    if (!data) return;
+    if (data.ok === false) {
+      alert(data.message);
+      return;
+    }
     alert("댓글이 수정되었습니다.");
 
     // 수정 모드 해제

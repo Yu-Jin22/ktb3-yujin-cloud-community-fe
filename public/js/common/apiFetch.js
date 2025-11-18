@@ -16,7 +16,6 @@ export async function apiFetch(url, options = {}) {
     const res = await fetch(BACKEND_URL + url, fetchOptions);
 
     // 인증 만료 감지
-
     if (res.status === 401) {
       console.warn("Access Token 만료 → refresh 시도");
 
@@ -37,17 +36,37 @@ export async function apiFetch(url, options = {}) {
       res = await fetch(BACKEND_URL + url, fetchOptions);
     }
 
-    // 서버 에러 등 일반 오류 처리
-    if (!res.ok) {
-      const msg = `요청 실패 (${res.status})`;
-      console.error(msg);
-      throw new Error(msg);
+    // 정상 응답
+    if (res.ok) {
+      return await res.json();
+      // const json = await res.json();
+      // return { ok: true, data: json };
     }
 
-    // 정상 응답(JSON)
-    return await res.json();
+    // 비즈니스 오류 (400~499)
+    if (res.status >= 400 && res.status < 500) {
+      let message = "요청을 처리할 수 없습니다.";
+
+      try {
+        const errorBody = await res.json();
+        message = errorBody.message || message;
+      } catch (e) {
+        // JSON parse 실패 시 기본 메시지 유지
+      }
+
+      return { ok: false, message };
+    }
+
+    // 서버 오류 (500~599)
+    return {
+      ok: false,
+      message: "서버 오류가 발생했습니다.",
+    };
   } catch (err) {
-    console.error("apiFetch error:", err);
-    throw err;
+    console.error("apiFetch network error:", err);
+    return {
+      ok: false,
+      message: "네트워크 오류가 발생했습니다.",
+    };
   }
 }
