@@ -64,7 +64,7 @@ async function renderPage(req, options = {}) {
 
     // 템플릿 조립
     const html = layout
-      .replace("{{title}}", options.title || "아무 말 대잔치")
+      .replace("{{title}}", options.title || "커뮤니티")
       .replace("{{extraCSS}}", extraCSS)
       .replace("{{extraJS}}", `${loginScript}\n${extraJS}`)
       .replace("{{header}}", header)

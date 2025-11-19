@@ -22,5 +22,5 @@ ENV NODE_ENV=production
 # 애플리케이션이 사용할 포트를 노출
 EXPOSE 3000
 
-#컨테이너가 실행될 때 앱을 시작합니다.
+#컨테이너가 실행될 때 앱을 시작
 CMD ["npm","start"]
