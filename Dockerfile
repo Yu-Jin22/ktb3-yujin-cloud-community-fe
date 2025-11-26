@@ -9,8 +9,8 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 
 # npm을 사용하여 종속성을 설치
-# RUN npm install --omit=dev -> 테스트/개발에만 필요한 패키지는 설치안하겠다는 의미
-RUN npm install
+# --omit=dev -> 테스트/개발에만 필요한 패키지는 설치안하겠다는 의미
+RUN npm install --omit=dev
 
 # 현재 디렉토리의 모든 파일을 Docker 이미지 내의 작업 디렉토리(WORKDIR)로 복사
 #  두 번째 점(.)은 이미지 내의 현재 작업 디렉토리, 즉 WORKDIR로 지정된 위치를 의미
