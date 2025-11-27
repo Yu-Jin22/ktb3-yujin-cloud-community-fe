@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let resetToDefault = false;
   let isCheckDuplicateNickname = false;
   let originalNickname = "";
+  let deleteProfileImage = false;
 
   // 실시간 닉네임 검사
   FormHelper.attachValidation(
@@ -41,9 +42,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     nicknameInput.value = data.nickname;
     originalNickname = data.nickname;
 
-    if (data.profileImageUrl) {
-      profilePreview.src = data.profileImageUrl;
-      currentProfileUrl = data.profileImageUrl;
+    if (data.profileUrl) {
+      profilePreview.src = data.profileUrl;
+      currentProfileUrl = data.profileUrl;
     }
   } catch (err) {
     console.error(" 회원정보 로드 실패:", err);
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!allowedExtensions.includes(fileExt)) {
       alert("이미지 파일은 jpg, jpeg, png, webp 형식만 업로드할 수 있습니다.");
       profileFileInput.value = "";
-      return;
+      return false;
     }
 
     // 2. 파일 사이즈 제한 (예: 5MB)
@@ -120,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (file.size > maxSize) {
       alert("이미지 파일 크기는 최대 5MB까지 가능합니다.");
       profileFileInput.value = "";
-      return;
+      return false;
     }
 
     // 3. 미리보기 처리
@@ -137,39 +138,78 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
 
     const nickname = nicknameInput.value.trim();
+    const file = profileFileInput.files[0];
+    let profileInfo = null;
 
-    // TODO 프로필이미지도 변경사항 추가해야함
-    if (nickname === originalNickname) {
+    if (
+      nickname === originalNickname &&
+      currentProfileUrl == file &&
+      !resetToDefault
+    ) {
       alert("수정할 사항이 없습니다.");
-      return;
-    }
-
-    if (!Valid.isValidNickname(nickname)) {
-      alert(message.NICKNAME.INVALID);
-      nicknameInput.focus();
-      return;
-    }
-
-    if (!isCheckDuplicateNickname) {
-      alert("닉네임 중복확인을 해주세요.");
-      return;
+      return false;
     }
 
     const formData = new FormData();
-    formData.append("nickname", nickname);
 
-    for (const [key, value] of formData.entries()) {
-      console.log("FormData:", key, value);
+    if (nickname !== originalNickname) {
+      if (!Valid.isValidNickname(nickname)) {
+        alert(message.NICKNAME.INVALID);
+        nicknameInput.focus();
+        return false;
+      }
+
+      if (!isCheckDuplicateNickname) {
+        alert("닉네임 중복확인을 해주세요.");
+        return false;
+      }
+      formData.append("nickname", nickname);
     }
 
-    // 프로필 이미지 업로드
-    // const file = profileFileInput.files[0];
-    // if (resetToDefault) {
-    //   formData.append("deleteProfileImage", "true"); // 이미지 삭제를 백엔드에게 알리기
-    // } else if (file) {
-    //   formData.append("profileImage", file);
-    // }
+    // 1. 이미지 변경이 있다면 람다 호출
+    if (file && currentProfileUrl != file && !resetToDefault) {
+      const lambdaUrl = "https://amazonaws.com/upload/profile-image";
 
+      const lambdaFormData = new FormData();
+      lambdaFormData.append("profileImage", file);
+
+      try {
+        const lambdaRes = await fetch(lambdaUrl, {
+          method: "POST",
+          body: lambdaFormData,
+        });
+
+        const lambdaData = await lambdaRes.json();
+
+        profileInfo = {
+          filePath: lambdaData.data.file_path,
+          fileName: lambdaData.data.file_name,
+          fileSize: lambdaData.data.file_size,
+          mimeType: lambdaData.data.mime_type,
+          fileType: "profile",
+        };
+        formData.append("profileInfo", JSON.stringify(profileInfo));
+
+        if (lambdaData?.data?.file_path) {
+          profileImageUrl = lambdaData.data.fileath; // S3 URL
+        } else {
+          alert("이미지 업로드 실패했습니다. 다시 시도해주세요.");
+          return false;
+        }
+      } catch (err) {
+        console.error("Lambda Upload Error:", err);
+        alert("이미지 업로드 중 오류가 발생했습니다.");
+        return false;
+      }
+    }
+
+    // 2. 기본 이미지로 초기화한 경우 deleteProfileImage = true
+    if (resetToDefault) {
+      deleteProfileImage = true;
+      formData.append("deleteProfileImage", true);
+    }
+
+    // 3. 백엔드 API 호출 & 람다에서 백엔드에 저장할 값 가져오는 쪽 수정
     try {
       const data = await apiFetch("/api/users/me", {
         method: "PATCH",
