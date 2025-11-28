@@ -1,5 +1,3 @@
-app.get("/health", (req, res) => res.status(200).send("OK"));
-
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -13,6 +11,9 @@ dotenv.config({
 
 const app = express();
 const PORT = 3000;
+
+// 헬스 체크 엔드포인트 (ALB 상태 확인용)
+app.get("/health", (req, res) => res.status(200).send("OK"));
 
 // 로그인 여부 판단을 위한 쿠키 파서
 app.use(cookieParser());
