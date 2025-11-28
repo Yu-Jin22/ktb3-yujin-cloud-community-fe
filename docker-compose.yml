@@ -1,0 +1,14 @@
+services:
+  frontend:
+    image: hanyujin1022/frontend:latest
+    container_name: community-frontend
+    restart: always
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      BACKEND_URL: ${BACKEND_URL}
+    networks:
+      - community_net
+
+networks:
+  community_net:
+    driver: bridge
