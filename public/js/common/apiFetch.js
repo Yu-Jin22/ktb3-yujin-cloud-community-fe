@@ -28,6 +28,7 @@ export async function apiFetch(url, options = {}) {
       // refresh 실패 → 로그인 만료
       if (!refreshRes.ok) {
         alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+        localStorage.removeItem("profileUrl");
         window.location.href = "/login";
         return null;
       }

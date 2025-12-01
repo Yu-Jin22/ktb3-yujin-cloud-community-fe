@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      localStorage.setItem("profileUrl", data.profileUrl);
       location.href = "/posts";
     } catch (err) {
       console.error("로그인 요청 오류:", err);

@@ -3,12 +3,18 @@ import { apiFetch } from "./common/apiFetch.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const profileArea = document.querySelector(".profile-area");
+  const profileImgDiv = document.querySelector(".profile-img");
   const dropdown = document.getElementById("dropdown");
   const logoutBtn = document.getElementById("logoutBtn");
   const backBtn = document.getElementById("backBtn");
 
   if (window.IS_LOGGED_IN) {
     profileArea.style.display = "flex";
+    const storedProfile = localStorage.getItem("profileUrl");
+
+    if (storedProfile) {
+      profileImgDiv.style.backgroundImage = `url(${storedProfile})`;
+    }
   } else {
     profileArea.style.display = "none";
   }
@@ -37,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      localStorage.removeItem("profileUrl");
       alert("로그아웃되었습니다.");
 
       location.href = "/login";
