@@ -1,4 +1,7 @@
 import { apiFetch } from "./common/apiFetch.js";
+import { fileUploader } from "./common/fileUploader.js";
+
+let selectedImageMeta = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const postId = getPostIdFromUrl();
@@ -19,30 +22,97 @@ document.addEventListener("DOMContentLoaded", async () => {
     titleText.textContent = "게시글 작성";
     form.addEventListener("submit", handleCreate);
   }
+
+  fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    const fileName = document.getElementById("fileName");
+
+    if (!file) {
+      fileName.textContent = "파일을 선택해주세요.";
+      selectedImageMeta = null;
+      return;
+    }
+
+    // 1. 확장자 검사
+    const allowed = ["jpg", "jpeg", "png", "webp"];
+    const ext = file.name.split(".").pop().toLowerCase();
+
+    if (!allowed.includes(ext)) {
+      alert("이미지 파일은 jpg, jpeg, png, webp 형식만 업로드할 수 있습니다.");
+      fileInput.value = "";
+      fileName.textContent = "파일을 선택해주세요.";
+      selectedImageMeta = null;
+      return;
+    }
+
+    // 2. 사이즈 제한 (5MB)
+    const max = 5 * 1024 * 1024;
+    if (file.size > max) {
+      alert("이미지 파일 크기는 최대 5MB까지 가능합니다.");
+      fileInput.value = "";
+      fileName.textContent = "파일을 선택해주세요.";
+      selectedImageMeta = null;
+      return;
+    }
+
+    // 3. 파일명 표시
+    fileName.textContent = file.name;
+
+    // 4. meta 정보 저장
+    selectedImageMeta = {
+      file,
+      originalName: file.name,
+      fileSize: file.size,
+      mimeType: file.type,
+    };
+  });
 });
 
 // 게시물 저장
 async function handleCreate(e) {
   e.preventDefault();
 
-  const title = document.getElementById("title").value;
-  const content = document.getElementById("content").value;
+  const title = document.getElementById("title").value.trim();
+  const content = document.getElementById("content").value.trim();
   const fileInput = document.getElementById("file");
-  const formData = new FormData();
 
-  formData.append("request", JSON.stringify({ title, content }));
+  let uploadedFiles = [];
+  // [{ key, originalName, fileSize, mimeType }]
 
-  // 파일 추가
+  // Presigned 업로드
   if (fileInput.files.length > 0) {
-    for (const file of fileInput.files) {
-      formData.append("images", file);
+    const file = fileInput.files[0];
+
+    try {
+      const keys = await fileUploader.uploadPostImages([file], null);
+
+      uploadedFiles = [
+        {
+          key: keys[0], // presigned key
+          originalName: file.name,
+          fileSize: file.size,
+          mimeType: file.type,
+        },
+      ];
+    } catch (err) {
+      console.error(err);
+      alert("이미지 업로드 실패");
+      return;
     }
   }
+
+  const body = {
+    title,
+    content,
+    images: uploadedFiles,
+    // ← 단일 업로드이지만 배열 형태
+  };
 
   try {
     const data = await apiFetch("/api/posts", {
       method: "POST",
-      body: formData,
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
     });
 
     if (data.ok === false) {
@@ -51,7 +121,7 @@ async function handleCreate(e) {
     }
 
     alert("게시글이 등록되었습니다.");
-    window.location.href = "/posts"; // 목록 페이지로 이동
+    window.location.href = "/posts";
   } catch (err) {
     console.error(err);
     alert("게시글 등록 중 오류가 발생했습니다.");
@@ -73,8 +143,11 @@ async function loadPostData(postId) {
     document.getElementById("title").value = data.title;
     document.getElementById("content").value = data.content;
 
-    if (data.imageUrls && data.imageUrls.length > 0) {
-      document.getElementById("fileName").textContent = data.imageUrls[0];
+    if (data.images && data.images.length > 0) {
+      const img = data.images[0];
+
+      document.getElementById("fileName").textContent =
+        data.images[0]["fileName"];
     }
   } catch (err) {
     console.error(err);
@@ -85,24 +158,48 @@ async function loadPostData(postId) {
 // 게시물 수정
 async function handleEdit(e, postId) {
   e.preventDefault();
-  const title = document.getElementById("title").value;
-  const content = document.getElementById("content").value;
+
+  const title = document.getElementById("title").value.trim();
+  const content = document.getElementById("content").value.trim();
   const fileInput = document.getElementById("file");
 
-  const formData = new FormData();
+  let newImage = null;
 
-  formData.append("request", JSON.stringify({ title, content }));
+  // 새 이미지 선택된 경우에만 S3 업로드
+  if (fileInput.files.length > 0 && selectedImageMeta) {
+    const file = selectedImageMeta.file;
 
-  for (const [key, value] of formData.entries()) {
-    console.log("FormData:", key, value);
+    try {
+      const keys = await fileUploader.uploadPostImages([file], postId);
+
+      newImage = {
+        key: keys[0],
+        originalName: file.name,
+        fileSize: file.size,
+        mimeType: file.type,
+      };
+    } catch (err) {
+      console.error(err);
+      alert("이미지 업로드 실패");
+      return;
+    }
   }
 
-  // TODO 파일 삭제 및 추가 관련 작업
+  const body = {
+    title,
+    content,
+  };
+
+  // 새 이미지가 선택된 경우에만 newImage 포함
+  if (newImage) {
+    body.newImage = newImage;
+  }
 
   try {
     const data = await apiFetch(`/api/posts/${postId}`, {
       method: "PATCH",
-      body: formData,
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
     });
 
     if (data.ok === false) {
@@ -111,7 +208,7 @@ async function handleEdit(e, postId) {
     }
 
     alert("게시글이 수정되었습니다.");
-    window.location.href = `/posts/${postId}`; // 수정 완료 후 상세 페이지로 이동
+    window.location.href = `/posts/${postId}`;
   } catch (err) {
     console.error(err);
     alert("게시글 수정 중 오류가 발생했습니다.");
