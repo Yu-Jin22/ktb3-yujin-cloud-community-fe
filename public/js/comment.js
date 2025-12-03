@@ -6,8 +6,9 @@ let commentPage = 0;
 const commentSize = 4;
 let commentLoading = false;
 let commentEnd = false;
-
-// 댓글 이벤트 등록 여부
+// 댓글 keydown 이벤트
+let commentKeydownAdded = false;
+// 댓글 수정/삭제 버튼 이벤트
 let commentEventListenerAdded = false;
 
 // 현재 수정 중인 댓글 ID를 저장
@@ -304,17 +305,20 @@ export function initCommentForm(postId) {
   });
 
   // Enter 키로 제출 (Shift+Enter는 줄바꿈)
-  commentInput.addEventListener("keydown", async (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
+  if (!commentKeydownAdded) {
+    commentInput.addEventListener("keydown", async (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
 
-      if (editingCommentId) {
-        await updateComment(postId, editingCommentId);
-      } else {
-        await createComment(postId);
+        if (editingCommentId) {
+          await updateComment(postId, editingCommentId);
+        } else {
+          await createComment(postId);
+        }
       }
-    }
-  });
+    });
+    commentKeydownAdded = true;
+  }
 }
 
 // 수정 모드 취소
