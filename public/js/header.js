@@ -8,6 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logoutBtn");
   const backBtn = document.getElementById("backBtn");
 
+  const currentPath = window.location.pathname;
+  if (currentPath === "/login" || currentPath === "/posts") {
+    backBtn.innerText = "";
+  } else {
+    backBtn.innerText = "←";
+  }
+
   if (window.IS_LOGGED_IN) {
     profileArea.style.display = "flex";
     const storedProfile = localStorage.getItem("profileUrl");
