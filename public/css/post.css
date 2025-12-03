@@ -9,10 +9,11 @@
   font-size: 18px;
   font-weight: 600;
   color: var(--font-color);
+  margin-bottom: 10px;
 }
 
 .board-header p {
-  margin: 4px 0 12px;
+  margin: 4px 0 15px;
   font-size: 14px;
   color: #666;
 }
@@ -31,7 +32,7 @@
   top: 10px;
   padding: 8px 14px;
   font-size: 14px;
-  background-color: #b097ff;
+  background-color: var(--primary-color);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -39,7 +40,7 @@
 }
 
 .btn-write:hover {
-  background-color: #977cff;
+  background-color: var(--hover-color);
 }
 
 /* 게시물 리스트 */
@@ -149,7 +150,7 @@ textarea:focus {
 }
 
 .file-input label {
-  background-color: #e5e1ff;
+  background-color: var(--background-dark-color);
   color: var(--font-color);
   padding: 6px 12px;
   border-radius: 8px;
@@ -252,7 +253,7 @@ textarea:focus {
 
 .detail-counts div {
   flex: 1;
-  background-color: #f7f7fb;
+  background-color: var(--background-dark-color);
   padding: 12px 0;
   margin: 0 4px;
   text-align: center;
@@ -294,7 +295,7 @@ textarea:focus {
 }
 
 .comment-form button:hover {
-  background-color: #5a54e2;
+  background-color: var(--hover-color);
 }
 
 .comment-form-buttons {
@@ -417,7 +418,7 @@ textarea:focus {
   width: 32px;
   height: 32px;
   border: 4px solid #ddd;
-  border-top-color: #b097ff;
+  border-top-color: var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

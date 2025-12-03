@@ -1,8 +1,10 @@
 /* ---------- 기본 공통 ---------- */
 :root {
-  --background-color: #f6f7fb;
-  --primary-color: #6c63ff;
-  --font-color: #333;
+  --background-color: #fff6e9;
+  --background-dark-color: #f0e4d2;
+  --primary-color: #d4a373;
+  --font-color: #2f2f2f;
+  --hover-color: #b5865e;
 }
 
 * {
@@ -29,9 +31,9 @@ body {
 
 .container.body {
   padding: 40px 24px;
-  background: #fff;
+  background: #fffaf2;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .wrapper {

@@ -4,13 +4,14 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #fff;
+  background-color: var(--background-color);
   border-bottom: 1px solid #ddd;
   height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  z-index: 999;
+  backdrop-filter: none;
 }
 
 /* 헤더 내부 콘텐츠 정렬용 컨테이너 */
@@ -22,6 +23,9 @@ header .container {
 
 /* 타이틀 */
 header .title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -29,6 +33,12 @@ header .title {
   font-weight: 600;
   color: var(--font-color);
   cursor: pointer;
+}
+
+header .title img {
+  width: 33px;
+  height: 33px;
+  object-fit: contain;
 }
 
 /* 뒤로가기 버튼 */

@@ -61,7 +61,7 @@
 }
 
 .btn-check:hover {
-  background-color: #f0efff;
+  background-color: #faf3eb;
 }
 
 /* ---------- 버튼 ---------- */
@@ -79,7 +79,7 @@
 }
 
 .btn-primary:hover {
-  background-color: #5a54e2;
+  background-color: var(--hover-color);
 }
 
 .btn-text {
@@ -95,13 +95,13 @@
 }
 
 .btn-text:hover {
-  color: #5a54e2;
-  text-decoration-color: #5a54e2;
+  color: var(--hover-color);
+  text-decoration-color: var(--hover-color);
 }
 
 /* 에러 메시지 */
 .error {
-  color: #e74c3c;
+  color: #d26757;
   font-size: 12px;
   margin-top: 5px;
 }
