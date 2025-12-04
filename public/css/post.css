@@ -443,3 +443,9 @@ textarea:focus {
   color: #888;
   margin: 8px 0;
 }
+.empty-comment {
+  padding: 20px 0;
+  text-align: center;
+  color: #998f86;
+  font-size: 14px;
+}
