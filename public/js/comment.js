@@ -423,6 +423,7 @@ async function updateComment(postId, commentId) {
 async function refreshCommentsFromStart(postId) {
   commentPage = 0;
   commentEnd = false;
+  commentKeydownAdded = true;
   const list = document.getElementById("commentList");
   const box = document.getElementById("commentLoadBox");
   if (box) {
