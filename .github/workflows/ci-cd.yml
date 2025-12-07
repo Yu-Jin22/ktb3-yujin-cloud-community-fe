@@ -56,5 +56,4 @@ jobs:
             cd /home/${{ secrets.SERVER_USER }}/ktb3-yujin-cloud-community-fe
             git pull origin main
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-            sudo docker compose --env-file .env.prod down
             sudo docker compose --env-file .env.prod up -d
