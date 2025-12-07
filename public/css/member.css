@@ -4,17 +4,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: var(--space-3xl);
 }
 
 .profile-wrapper {
   position: relative;
   width: 120px;
   height: 120px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   overflow: hidden;
-  background-color: #ddd;
-  margin-bottom: 10px;
+  background-color: var(--bg-tertiary);
+  border: 3px solid var(--border-light);
+  margin-bottom: var(--space-md);
 }
 
 .profile-wrapper img {
@@ -28,12 +29,17 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--bg-overlay);
   color: #fff;
-  font-size: 13px;
+  font-size: var(--font-size-sm);
   text-align: center;
-  padding: 6px 0;
+  padding: var(--space-sm) 0;
   cursor: pointer;
+  transition: background-color var(--transition-base);
+}
+
+.profile-change:hover {
+  background: rgba(0, 0, 0, 0.75);
 }
 
 /* 숨겨진 파일 인풋 */
@@ -44,15 +50,16 @@
 .btn-reset-profile {
   background: none;
   border: none;
-  color: var(--primary-color);
-  font-size: 13px;
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
   cursor: pointer;
   text-decoration: underline transparent;
-  transition: text-decoration-color 0.2s;
+  transition: text-decoration-color var(--transition-base), color var(--transition-base);
 }
 
 .btn-reset-profile:hover {
-  text-decoration-color: var(--primary-color);
+  text-decoration-color: var(--color-accent);
+  color: var(--color-accent-hover);
 }
 
 /* 하단 버튼 정렬 */
@@ -60,8 +67,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin-top: 20px;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
 }
 
 .member-btns .btn-primary {
@@ -70,10 +77,17 @@
 
 .member-btns .btn-outline {
   width: 100%;
-  border-color: #e74c3c;
-  color: #e74c3c;
+  padding: var(--space-md);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  color: var(--color-error);
+  cursor: pointer;
+  transition: all var(--transition-base);
 }
 
 .member-btns .btn-outline:hover {
-  background-color: #fff5f5;
+  background-color: rgba(231, 76, 60, 0.05);
 }

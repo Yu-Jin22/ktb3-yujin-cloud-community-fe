@@ -2,38 +2,40 @@
 
 .form-title {
   text-align: center;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--font-color);
-  margin-bottom: 30px;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3xl);
 }
 
 /* ---------- 라벨 + 인풋 ---------- */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 10px;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
 }
 
 .form-group label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #555;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
   text-align: left;
 }
 
 .form-group input {
-  padding: 12px 14px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--font-size-base);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .form-group input:focus {
-  border-color: var(--primary-color);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
 /* ---------- input 옆 버튼 ---------- */
@@ -41,7 +43,7 @@
 .input-with-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-sm);
 }
 
 .input-with-btn input {
@@ -50,58 +52,62 @@
 
 .btn-check {
   white-space: nowrap;
-  padding: 8px 12px;
-  font-size: 13px;
-  border: 1px solid var(--primary-color);
-  border-radius: 8px;
-  background-color: #fff;
-  color: var(--primary-color);
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  color: var(--color-accent);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
 }
 
 .btn-check:hover {
-  background-color: #faf3eb;
+  background-color: rgba(52, 152, 219, 0.08);
+  border-color: var(--color-accent-hover);
 }
 
 /* ---------- 버튼 ---------- */
 .btn-primary {
   width: 100%;
-  padding: 12px;
-  font-size: 15px;
-  font-weight: 600;
+  padding: var(--space-md);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
   border: none;
-  border-radius: 8px;
-  background-color: var(--primary-color);
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent);
   color: #fff;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all var(--transition-base);
 }
 
 .btn-primary:hover {
-  background-color: var(--hover-color);
+  background-color: var(--color-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-text {
   width: 100%;
-  margin-top: 12px;
+  margin-top: var(--space-md);
   background: none;
   border: none;
-  color: var(--primary-color);
-  font-size: 14px;
+  color: var(--color-accent);
+  font-size: var(--font-size-base);
   cursor: pointer;
   text-decoration: underline transparent;
-  transition: color 0.2s, text-decoration-color 0.2s;
+  transition: color var(--transition-base), text-decoration-color var(--transition-base);
 }
 
 .btn-text:hover {
-  color: var(--hover-color);
-  text-decoration-color: var(--hover-color);
+  color: var(--color-accent-hover);
+  text-decoration-color: var(--color-accent-hover);
 }
 
 /* 에러 메시지 */
 .error {
-  color: #d26757;
-  font-size: 12px;
-  margin-top: 5px;
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  margin-top: var(--space-xs);
 }

@@ -1,19 +1,13 @@
 /* ---------- 기본 공통 ---------- */
-:root {
-  --background-color: #fff6e9;
-  --background-dark-color: #f0e4d2;
-  --primary-color: #d4a373;
-  --font-color: #2f2f2f;
-  --hover-color: #b5865e;
-}
 
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: "Noto Sans KR", sans-serif;
-  background-color: var(--background-color);
+  font-family: var(--font-primary);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -25,15 +19,16 @@ body {
 /* 모바일 여백 통일 */
 .container {
   width: 100%;
-  max-width: 420px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
 }
 
 .container.body {
-  padding: 40px 24px;
-  background: #fffaf2;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: var(--space-4xl) var(--space-2xl);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .wrapper {

@@ -4,14 +4,16 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: var(--background-color);
-  border-bottom: 1px solid #ddd;
-  height: 56px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-light);
+  height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
-  backdrop-filter: none;
+  z-index: var(--z-header);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 /* 헤더 내부 콘텐츠 정렬용 컨테이너 */
@@ -29,24 +31,24 @@ header .title {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--font-color);
-  cursor: pointer;
 }
 
 header .title img {
-  width: 33px;
-  height: 33px;
+  width: 150px;
   object-fit: contain;
 }
 
 /* 뒤로가기 버튼 */
 header .back-btn {
-  font-size: 18px;
-  color: #666;
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
   text-decoration: none;
   cursor: pointer;
+  transition: color var(--transition-base);
+}
+
+header .back-btn:hover {
+  color: var(--text-primary);
 }
 
 /* 프로필 영역 */
@@ -56,39 +58,44 @@ header .profile-area {
 
 header .profile-img {
   display: inline-block;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
   background-image: url("/assets/profile_default.webp");
   background-size: cover;
   background-position: center;
   cursor: pointer;
+  transition: opacity var(--transition-base);
+}
+
+header .profile-img:hover {
+  opacity: 0.8;
 }
 
 /* 드롭다운 */
 header .dropdown {
   position: absolute;
-  top: 36px;
+  top: 42px;
   right: 0;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
   display: none;
   flex-direction: column;
   min-width: 160px;
 }
 
 header .dropdown a {
-  padding: 10px 14px;
+  padding: var(--space-sm) var(--space-lg);
   text-decoration: none;
-  color: var(--font-color);
-  font-size: 14px;
-  transition: background-color 0.2s;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+  transition: background-color var(--transition-base);
 }
 
 header .dropdown a:hover {
-  background-color: #f6f6ff;
+  background-color: var(--bg-secondary);
 }
 
 header .dropdown.show {
@@ -97,5 +104,5 @@ header .dropdown.show {
 
 /* 본문 영역은 헤더 아래로 밀기 */
 main {
-  margin-top: 80px;
+  margin-top: calc(var(--header-height) + var(--space-lg));
 }
