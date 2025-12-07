@@ -44,14 +44,32 @@ Closet Lounge는 패션에 관심 있는 사용자들이 모여 소통하는 폐
 ## 서비스 화면
 
 `홈`
+|로그인|회원가입|이용약관|개인정보처리방침|
+|---|---|---|---|
+|![image](https://github.com/user-attachments/assets/5394f814-e255-4bde-aca5-fed363027746)|![image](https://github.com/user-attachments/assets/79e160bf-b0fa-424f-afe6-7acb7639e8e9)|![image](https://github.com/user-attachments/assets/49dfa14d-3853-4da4-9b4e-4a0dd0bbe9f2)|![image](https://github.com/user-attachments/assets/227403b5-176c-437c-9aec-c167e19038c9)|
 
 `게시물 목록`
+|게시물 목록|
+|---|
+|<img width="479" height="425" alt="Image" src="https://github.com/user-attachments/assets/0618c9e1-d8ef-4432-bb55-bd08fa59b0a4" /> |
 
 `게시물 작성 / 상세 / 수정 / 삭제`
 
-`댓글 목록 / 등록 / 수정 /삭제`
+| 게시물 작성                                                                               | 게시물 상세                                                                               | 게시글 수정                                                                               | 게시글 삭제                                                                               |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| ![image](https://github.com/user-attachments/assets/d03d8376-7a96-4f3d-ad91-82c9060f8fa8) | ![image](https://github.com/user-attachments/assets/e35bc57a-ae4a-4e29-ab6c-de057113b127) | ![image](https://github.com/user-attachments/assets/bb759e38-5690-4dc0-858c-09f2862bb72c) | ![image](https://github.com/user-attachments/assets/7dbfa8e8-d2dd-4047-b7fb-d602b083b478) |
 
-`프로필 수정 / 비밀번호 수정 / 회원 탈퇴 / 로그아웃`
+`댓글 목록 / 등록 / 수정 /삭제`
+|댓글 화면|댓글 등록/수정|댓글 삭제|
+|---|---|---|
+|![image](https://github.com/user-attachments/assets/798ca65f-c256-49bb-91a7-da6e7ce648ca)|![image](https://github.com/user-attachments/assets/eab6c3ce-1dbf-43b6-a5e6-d193f006e43f)|![image](https://github.com/user-attachments/assets/a67609f8-bab0-4bf2-9e02-4447a0a36966)|
+
+`회원정보 수정 / 비밀번호 수정 / 회원 탈퇴 / 로그아웃`
+|회원정보 수정|비밀번호 수정|회원 탈퇴|로그아웃|
+|---|---|---|---|
+|![image](https://github.com/user-attachments/assets/b71456f8-972e-4f3d-893b-a3328e3e5b09)|![image](https://github.com/user-attachments/assets/20182848-4c21-42e3-b1a8-93950d619797)|![image](https://github.com/user-attachments/assets/2d7a8b09-134c-4c9e-ae54-755dde9d36c9)|![image](https://github.com/user-attachments/assets/06bcc5f7-48fd-4cd2-9491-81dda2c88b20)|
+
+<br/>
 
 ## 💻 기술 스택
 
