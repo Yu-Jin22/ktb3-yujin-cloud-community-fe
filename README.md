@@ -1,4 +1,4 @@
-# Closet Lounge
+<img width="290" height="100" alt="Closet Lounge" src="https://github.com/user-attachments/assets/60cf468b-e3ec-4c5a-abf1-e94044934d11" />
 
 ## 📌 프로젝트 소개
 
